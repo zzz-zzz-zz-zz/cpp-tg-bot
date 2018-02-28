@@ -1,0 +1,7 @@
+*.secret
+.vscode
+.c9
+bot
+main.cpp
+*.o
+media/*
