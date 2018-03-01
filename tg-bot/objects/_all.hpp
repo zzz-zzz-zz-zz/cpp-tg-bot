@@ -4,6 +4,7 @@
 #include "_fwd.hpp"
 #include "_ext.hpp"
 #include "_mcr.hpp"
+#include "_exc.hpp"
 
 
 #include "audio.hpp"
