@@ -13,7 +13,7 @@ public:
         message = "TelegramApiException: " + msg;
     }
 
-    ~TelegramApiException(void) {}
+    virtual ~TelegramApiException(void) {}
     virtual const char* what() { return message.c_str(); }
 protected:
     std::string message;
@@ -27,8 +27,6 @@ public:
     {
         message = "TelegramBadRequestException: " + msg;
     }
-
-    ~TelegramBadRequestException(void) {}
 };
 
 
