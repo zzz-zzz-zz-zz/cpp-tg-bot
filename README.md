@@ -31,6 +31,7 @@ Handy Telegram bot API wrapper. **IN DEVELOPMENT**.
 |getFile|Good||`File` is not realized yet|
 |kickChatMember|Nice|+3|*TODO: add easy ban for mins/hours/days*|
 |unbanChatMember|Done|+1||
+|restrictChatMember|Nice|+7|*TODO: add easy ban for mins/hours/days*|
 |**Nothing else yet**|**...**|**...**|**TODO next methods**|
 
 ## Realized API object types:
