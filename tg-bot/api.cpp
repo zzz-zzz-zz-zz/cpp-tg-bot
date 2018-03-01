@@ -613,6 +613,90 @@ bool Api::unbanChatMember(string chat_id, i32_t user_id)
 /*=========================== END OF unbanChatMember ==========================*/
 
 
+
+/*======================================================*/
+/*===================== restrictChatMember ====================*/
+/*======================================================*/
+bool Api::restrictChatMember(i32_t chat_id, i32_t user_id)
+{
+    return restrictChatMember(std::to_string(chat_id), user_id);
+}
+bool Api::restrictChatMember(i32_t chat_id, i32_t user_id, i32_t until_date)
+{
+    return restrictChatMember(std::to_string(chat_id), user_id, until_date);
+}
+bool Api::restrictChatMember(i32_t chat_id, i32_t user_id, 
+        bool can_send_messages, bool can_send_media_messages, 
+        bool can_send_other_messages, bool can_add_web_page_previews)
+{
+    return restrictChatMember(std::to_string(chat_id), user_id, 
+            can_send_messages, can_send_media_messages,
+            can_send_other_messages, can_add_web_page_previews);
+}
+bool Api::restrictChatMember(i32_t chat_id, i32_t user_id, i32_t until_date, 
+        bool can_send_messages, bool can_send_media_messages, 
+        bool can_send_other_messages, bool can_add_web_page_previews)
+{
+    return restrictChatMember(std::to_string(chat_id), user_id, until_date, 
+            can_send_messages, can_send_media_messages,
+            can_send_other_messages, can_add_web_page_previews);
+}
+bool Api::restrictChatMember(string chat_id, i32_t user_id)
+{
+    map args;
+    args["chat_id"] = chat_id;
+    args["user_id"] = user_id;
+
+    json jres = json::parse(execute("restrictChatMember", args));
+
+    return jres.at("ok").get<bool>();
+}
+bool Api::restrictChatMember(string chat_id, i32_t user_id, i32_t until_date)
+{
+    map args;
+    args["chat_id"] = chat_id;
+    args["user_id"] = user_id;
+    args["until_date"] = until_date;
+
+    json jres = json::parse(execute("restrictChatMember", args));
+
+    return jres.at("ok").get<bool>();   
+}
+bool Api::restrictChatMember(string chat_id, i32_t user_id, 
+        bool can_send_messages, bool can_send_media_messages, 
+        bool can_send_other_messages, bool can_add_web_page_previews)
+{
+    map args;
+    args["chat_id"] = chat_id;
+    args["user_id"] = user_id;
+    args["can_send_messages"] = string(can_send_messages ? "true" : "false");
+    args["can_send_media_messages"] = string(can_send_media_messages ? "true" : "false");
+    args["can_send_other_messages"] = string(can_send_other_messages ? "true" : "false");
+    args["can_add_web_page_previews"] = string(can_add_web_page_previews ? "true" : "false");
+
+    json jres = json::parse(execute("restrictChatMember", args));
+
+    return jres.at("ok").get<bool>();
+}
+bool Api::restrictChatMember(string chat_id, i32_t user_id, i32_t until_date, 
+        bool can_send_messages, bool can_send_media_messages, 
+        bool can_send_other_messages, bool can_add_web_page_previews)
+{
+    map args;
+    args["chat_id"] = chat_id;
+    args["user_id"] = user_id;
+    args["until_date"] = until_date;    
+    args["can_send_messages"] = string(can_send_messages ? "true" : "false");
+    args["can_send_media_messages"] = string(can_send_media_messages ? "true" : "false");
+    args["can_send_other_messages"] = string(can_send_other_messages ? "true" : "false");
+    args["can_add_web_page_previews"] = string(can_add_web_page_previews ? "true" : "false");
+
+    json jres = json::parse(execute("restrictChatMember", args));
+}
+/*==================== END OF restrictChatMember ====================*/
+
+
+
 /*=====   PRIVATE:   =====   PRIVATE:   =====   PRIVATE:   =====*/
 /*=====   PRIVATE:   =====   PRIVATE:   =====   PRIVATE:   =====*/
 /*=====   PRIVATE:   =====   PRIVATE:   =====   PRIVATE:   =====*/

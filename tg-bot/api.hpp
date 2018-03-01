@@ -149,6 +149,24 @@ public:
     bool unbanChatMember(i32_t chat_id, i32_t user_id);
     bool unbanChatMember(string chat_id, i32_t user_id);
 
+    bool restrictChatMember(i32_t chat_id, i32_t user_id);
+    bool restrictChatMember(i32_t chat_id, i32_t user_id, i32_t until_date);
+    bool restrictChatMember(i32_t chat_id, i32_t user_id, 
+            bool can_send_messages, bool can_send_media_messages, 
+            bool can_send_other_messages, bool can_add_web_page_previews);
+    bool restrictChatMember(i32_t chat_id, i32_t user_id, i32_t until_date, 
+            bool can_send_messages, bool can_send_media_messages, 
+            bool can_send_other_messages, bool can_add_web_page_previews);
+    bool restrictChatMember(string chat_id, i32_t user_id);
+    bool restrictChatMember(string chat_id, i32_t user_id, i32_t until_date);
+    bool restrictChatMember(string chat_id, i32_t user_id, 
+            bool can_send_messages, bool can_send_media_messages, 
+            bool can_send_other_messages, bool can_add_web_page_previews);
+    bool restrictChatMember(string chat_id, i32_t user_id, i32_t until_date, 
+            bool can_send_messages, bool can_send_media_messages, 
+            bool can_send_other_messages, bool can_add_web_page_previews);
+
+    
     // TODO: next methods...
 private:
     string execute(const char *method, map args);
