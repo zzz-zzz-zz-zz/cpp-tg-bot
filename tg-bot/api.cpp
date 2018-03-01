@@ -648,7 +648,6 @@ bool Api::restrictChatMember(string chat_id, i32_t user_id)
     args["user_id"] = user_id;
 
     json jres = json::parse(execute("restrictChatMember", args));
-
     return jres.at("ok").get<bool>();
 }
 bool Api::restrictChatMember(string chat_id, i32_t user_id, i32_t until_date)
@@ -659,7 +658,6 @@ bool Api::restrictChatMember(string chat_id, i32_t user_id, i32_t until_date)
     args["until_date"] = until_date;
 
     json jres = json::parse(execute("restrictChatMember", args));
-
     return jres.at("ok").get<bool>();   
 }
 bool Api::restrictChatMember(string chat_id, i32_t user_id, 
@@ -675,7 +673,6 @@ bool Api::restrictChatMember(string chat_id, i32_t user_id,
     args["can_add_web_page_previews"] = string(can_add_web_page_previews ? "true" : "false");
 
     json jres = json::parse(execute("restrictChatMember", args));
-
     return jres.at("ok").get<bool>();
 }
 bool Api::restrictChatMember(string chat_id, i32_t user_id, i32_t until_date, 
@@ -692,6 +689,7 @@ bool Api::restrictChatMember(string chat_id, i32_t user_id, i32_t until_date,
     args["can_add_web_page_previews"] = string(can_add_web_page_previews ? "true" : "false");
 
     json jres = json::parse(execute("restrictChatMember", args));
+    return jres.at("ok").get<bool>();    
 }
 /*==================== END OF restrictChatMember ====================*/
 
