@@ -9,7 +9,7 @@ Api::Api(string tkn)
 {
     token = tkn;
     last_update_id = -1;
-    getUpdates(false);
+    getUpdates(0, false); // First launch without timeout. OK?
 }
 
 Api::Api(const Api &a)
@@ -45,7 +45,8 @@ list<Update> Api::getUpdates(i32_t timeout_s, bool validate)
 {
     list<Update> updates;
     map args;
-    args["timeout"] = std::to_string(timeout_s);
+    if (timeout_s > 0)
+        args["timeout"] = std::to_string(timeout_s);
 
     if (validate && last_update_id > 0)
         args["offset"] = std::to_string(last_update_id+1); // +1
