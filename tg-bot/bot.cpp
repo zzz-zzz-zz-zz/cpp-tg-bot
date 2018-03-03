@@ -8,8 +8,6 @@ Bot::Bot(string token)
     api = new Api(token);
 }
 
-Bot::Bot(const char *token) : Bot(string(token)){}
-
 Bot::~Bot()
 {
     delete api;

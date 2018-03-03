@@ -7,7 +7,8 @@
 class Api
 {
 public:
-    enum UpdateFilters {
+    enum UpdateFilters 
+    {
         NONE                  =   0b000000000,
         MESSAGE               =   0b000000001,
         EDITED_MESSAGE        =   0b000000010,
@@ -20,14 +21,24 @@ public:
         PRE_CHECKOUT_QUERY    =   0b100000000,
         ALL                   =   0b111111111,
     };
-    enum FileFrom {
-        URL = 0x01, // External url
-        FILE_ID = 0x02, // File id in Telegram
-        DISK = 0x03, // Filename on disk(full or relative)
+
+    enum class FileFrom 
+    {
+        URL,     // External url
+        FILE_ID, // File id in Telegram
+        DISK,    // Filename on disk(full or relative)
     };
 
-    static const char* PARSE_MODE_HTML;
-    static const char* PARSE_MODE_MARKDOWN;
+    class ParseMode 
+    {
+        public:
+            static const char *HTML;
+            static sonst char *MARKDOWN;
+        private:
+            ParseMode() = delete;
+            ParseMode(const ParseMode &) = delete;
+            ParseMode& operator=(const ParseMode &) = delete;
+    }
 
     Api(const Api&);
     Api(string);

@@ -1,8 +1,8 @@
 #include "api.hpp"
 
 
-const char* Api::PARSE_MODE_HTML = "HTML";
-const char* Api::PARSE_MODE_MARKDOWN = "Markdown";
+const char* Api::ParseMode::MARKDOWN = "Markdown";
+const char* Api::ParseMode::HTML = "HTML";
 
 
 Api::Api(string tkn)

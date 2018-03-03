@@ -9,7 +9,6 @@ class Bot
 {
 public:
     Bot(string);
-    Bot(const char *);
     ~Bot();
 
     bool has_updates();
