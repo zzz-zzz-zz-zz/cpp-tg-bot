@@ -17,20 +17,21 @@ Message::Message(json j)
 
     message_id = j.at("message_id").get<int>();
     date = j.at("date").get<int>();
-    chat = std::make_unique<Chat>(j.at("chat").get<json>());
+    chat = std::make_shared<Chat>(j.at("chat").get<json>());
 
     try {
-        from = std::make_unique<User>(j.at("from").get<json>());
+        from = std::make_shared<User>(j.at("from").get<json>());
     } catch (exception &e) {
         std::cerr << "Message::Message(json): from is empty!" << std::endl;
         from = nullptr;
     }
 
     OMIT(text = string(j.at("text").get<string>()))
-    OMIT(audio = std::make_unique<Audio>(j.at("audio").get<json>()))
+    OMIT(audio = std::make_shared<Audio>(j.at("audio").get<json>()))
+    OMIT(document = std::make_shared<Document>(j.at("document").get<json>()))
     OMIT(
         json jphoto = j.at("photo");
-        photo = std::make_unique<vector<PhotoSize>>();
+        photo = std::make_shared<vector<PhotoSize>>();
 
         for (json::iterator it = jphoto.begin(); it != jphoto.end(); it++)
             photo->push_back(PhotoSize(*it));
@@ -49,6 +50,7 @@ Message::Message(const Message &that)
     from = that.from; //shared_ptr
     audio = that.audio; //shared_ptr
     photo = that.photo;
+    document = that.document;
 }
 
 Message::Message(Message &&that) noexcept
@@ -60,6 +62,7 @@ Message::Message(Message &&that) noexcept
     from = std::move(that.from);
     audio = std::move(that.audio);
     photo = std::move(that.photo);
+    document = std::move(that.document);
 }
 
 
@@ -77,4 +80,11 @@ User Message::get_from() {
         throw TelegramNullObjectException("Message::get_from(): from is empty!");
 
     return *from;
+}
+
+Document Message::get_document()
+{
+    if (!document)
+        throw TelegramNullObjectException("No document!");
+    return *document;
 }

@@ -17,10 +17,12 @@
 #include <curl/curl.h>
 #include <map>
 #include <list>
+#include <vector>
 #include <optional>
 #include <exception>
 using std::shared_ptr;
 using std::string;
+using std::vector;
 using json = nlohmann::json;
 using map = std::map<string, string>;
 using std::list;

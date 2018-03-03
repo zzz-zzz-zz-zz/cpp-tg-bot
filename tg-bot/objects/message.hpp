@@ -20,13 +20,23 @@ public:
     string get_text() { return text.value_or(""); }
     bool has_text() { return text.has_value(); }
 
-    vector<PhotoSize> get_photo() 
+    bool has_audio() { return audio != nullptr; }
+    //TODO: get_audio
+
+    bool has_photo() { return photo != nullptr; }
+    vector<PhotoSize> get_photo() const
     { 
         if (!photo) 
             throw TelegramNullObjectException("No photo array!");  
-        return *photo; 
+        return *photo;
     }
-    bool has_photo() { return photo != nullptr; }
+    vector<PhotoSize> get_photo_s() const noexcept
+    {
+        return photo ? *photo : vector<PhotoSize>();
+    }
+
+    bool has_document() const noexcept { return document != nullptr; }
+    Document get_document();
 
     //
 private:
@@ -47,7 +57,7 @@ private:
     // list<MessageEntity> *entities;
     // list<MessageEntity> *caption_entities;
     shared_ptr<Audio> audio = nullptr;
-    // Document *document;
+    shared_ptr<Document> document = nullptr;
     // Game *game;
     shared_ptr<vector<PhotoSize>> photo = nullptr; //!! >> | > >
     // Sticker *sticker;
