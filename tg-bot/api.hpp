@@ -33,12 +33,10 @@ public:
     {
         public:
             static const char *HTML;
-            static sonst char *MARKDOWN;
+            static const char *MARKDOWN;
         private:
             ParseMode() = delete;
-            ParseMode(const ParseMode &) = delete;
-            ParseMode& operator=(const ParseMode &) = delete;
-    }
+    };
 
     Api(const Api&);
     Api(string);
