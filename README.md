@@ -38,7 +38,7 @@ Handy Telegram bot API wrapper. **IN DEVELOPMENT**.
 |Type|Status|Note|
 |---|---|---|
 |User|Done||
-|Chat|Good|Problem with destructor + constructor|
+|Chat|Good|*TODO: Add move-constr, operator=*|
 |Message|Raw|A lot of *TODO* there|
 |PhotoSize|Nice|**TODO: tests**|
 |**Empty or nonexistent types**|**...**|**TODO next types**|
