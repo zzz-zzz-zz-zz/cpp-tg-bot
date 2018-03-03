@@ -30,7 +30,7 @@ Message::Message(json j)
     OMIT(audio = std::make_unique<Audio>(j.at("audio").get<json>()))
     OMIT(
         json jphoto = j.at("photo");
-        photo = std::make_unique<list<PhotoSize>>();
+        photo = std::make_unique<vector<PhotoSize>>();
 
         for (json::iterator it = jphoto.begin(); it != jphoto.end(); it++)
             photo->push_back(PhotoSize(*it));
