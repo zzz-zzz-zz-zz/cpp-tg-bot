@@ -6,7 +6,9 @@
 
 class Document
 {
-
+public:
+    Document(string);
+    Document(json);
 };
 
 
