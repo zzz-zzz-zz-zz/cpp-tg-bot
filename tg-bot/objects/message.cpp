@@ -17,29 +17,55 @@ Message::Message(json j)
 
     message_id = j.at("message_id").get<int>();
     date = j.at("date").get<int>();
-    chat = new Chat(j.at("chat").get<json>());
+    chat = std::make_unique<Chat>(j.at("chat").get<json>());
 
     try {
-        from = new User(j.at("from").get<json>());
+        from = std::make_unique<User>(j.at("from").get<json>());
     } catch (exception &e) {
         std::cerr << "Message::Message(json): from is empty!" << std::endl;
         from = nullptr;
     }
 
     OMIT(text = string(j.at("text").get<string>()))
-    OMIT(audio = new Audio(j.at("audio").get<json>()))
+    OMIT(audio = std::make_unique<Audio>(j.at("audio").get<json>()))
 
     std::cout << "TOFINISH: Message::Message(json)!" << std::endl;
     // TODO: other
 }
 
+Message::Message(const Message &that)
+{
+    message_id = that.message_id;
+    date = that.date;
+    chat = that.chat; //shared_ptr
+    text = that.text;
+    from = that.from; //shared_ptr
+    audio = that.audio; //shared_ptr
+}
+
+Message::Message(Message &&that) noexcept
+{
+    message_id = std::move(that.message_id);
+    date = std::move(that.date);
+    chat = std::move(that.chat);
+    text = std::move(that.text);
+    from = std::move(that.from);
+    audio = std::move(that.audio);
+}
+
+
+
 
 Chat Message::get_chat() {
+    if (!chat) // Most likely !!EXCESS!! check
+        throw TelegramNullObjectException("Message::get_chat(): chat is empty!");
+    
     return *chat;
 }
 
 User Message::get_from() {
-    if (from == nullptr)
-        throw std::invalid_argument("Message.from is empty!");
+    if (!from) // Most likely !!EXCESS!! check
+        throw TelegramNullObjectException("Message::get_from(): from is empty!");
+
     return *from;
 }
