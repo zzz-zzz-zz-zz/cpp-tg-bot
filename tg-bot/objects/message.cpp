@@ -28,6 +28,13 @@ Message::Message(json j)
 
     OMIT(text = string(j.at("text").get<string>()))
     OMIT(audio = std::make_unique<Audio>(j.at("audio").get<json>()))
+    OMIT(
+        json jphoto = j.at("photo");
+        photo = std::make_unique<list<PhotoSize>>();
+
+        for (json::iterator it = jphoto.begin(); it != jphoto.end(); it++)
+            photo->push_back(PhotoSize(*it));
+    )
 
     std::cout << "TOFINISH: Message::Message(json)!" << std::endl;
     // TODO: other
@@ -41,6 +48,7 @@ Message::Message(const Message &that)
     text = that.text;
     from = that.from; //shared_ptr
     audio = that.audio; //shared_ptr
+    photo = that.photo;
 }
 
 Message::Message(Message &&that) noexcept
@@ -51,6 +59,7 @@ Message::Message(Message &&that) noexcept
     text = std::move(that.text);
     from = std::move(that.from);
     audio = std::move(that.audio);
+    photo = std::move(that.photo);
 }
 
 

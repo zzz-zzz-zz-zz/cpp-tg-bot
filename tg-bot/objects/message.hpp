@@ -20,6 +20,14 @@ public:
     string get_text() { return text.value_or(""); }
     bool has_text() { return text.has_value(); }
 
+    list<PhotoSize> get_photo() 
+    { 
+        if (!photo) 
+            throw TelegramNullObjectException("No photo array!");  
+        return *photo; 
+    }
+    bool has_photo() { return photo != nullptr; }
+
     //
 private:
     int message_id;
@@ -41,7 +49,7 @@ private:
     shared_ptr<Audio> audio = nullptr;
     // Document *document;
     // Game *game;
-    // list<PhotoSize> *photo;
+    shared_ptr<list<PhotoSize>> photo = nullptr; //!! >> | > >
     // Sticker *sticker;
     // Video *video;
     // Voice *voice;

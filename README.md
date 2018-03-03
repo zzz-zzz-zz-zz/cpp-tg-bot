@@ -40,6 +40,7 @@ Handy Telegram bot API wrapper. **IN DEVELOPMENT**.
 |User|Done||
 |Chat|Good|Problem with destructor + constructor|
 |Message|Raw|A lot of *TODO* there|
+|PhotoSize|Nice|**TODO: tests**|
 |**Empty or nonexistent types**|**...**|**TODO next types**|
 
 ## TODO list:
