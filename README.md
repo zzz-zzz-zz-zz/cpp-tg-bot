@@ -14,7 +14,7 @@ Handy Telegram bot API wrapper. **IN DEVELOPMENT**.
 |---|---|---|---|
 |sendMessage|Good|+7|`Message` is not finished yet|
 |forwardMessage|Good|+7|☝️|
-|sendPhoto|Raw|+1|`PhotoSize` is not realized yet|
+|sendPhoto|Raw|+1|*TODO: overloads?*|
 |sendAudio|Raw|+1|`Audio` is not realized yet|
 |sendDocument|Raw|+1|`Document` is not realized yet|
 |sendVideo|Raw|+1|`Video` is not realized yet|
