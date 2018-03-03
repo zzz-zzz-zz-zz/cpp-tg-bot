@@ -242,10 +242,10 @@ string Api::sendPhoto(string chat_id, FileFrom from, string filename)
 
     switch (from)
     {
-        case DISK:
+        case FileFrom::DISK:
             return executeSend("sendPhoto", args, "photo", filename);
-        case FILE_ID:
-        case URL:
+        case FileFrom::FILE_ID:
+        case FileFrom::URL:
             args["photo"] = filename;
             return execute("sendPhoto", args);
         default:
@@ -271,10 +271,10 @@ string Api::sendAudio(string chat_id, FileFrom from, string filename)
 
     switch (from)
     {
-        case DISK:
+        case FileFrom::DISK:
             return executeSend("sendAudio", args, "audio", filename);
-        case FILE_ID:
-        case URL:
+        case FileFrom::FILE_ID:
+        case FileFrom::URL:
             args["audio"] = filename;
             return execute("sendAudio", args);
         default:
@@ -300,10 +300,10 @@ string Api::sendDocument(string chat_id, FileFrom from, string filename)
 
     switch (from)
     {
-        case DISK:
+        case FileFrom::DISK:
             return executeSend("sendDocument", args, "document", filename);
-        case FILE_ID:
-        case URL:
+        case FileFrom::FILE_ID:
+        case FileFrom::URL:
             args["document"] = filename;
             return execute("sendDocument", args);
         default:
@@ -329,10 +329,10 @@ string Api::sendVideo(string chat_id, FileFrom from, string filename)
 
     switch (from)
     {
-        case DISK:
+        case FileFrom::DISK:
             return executeSend("sendVideo", args, "video", filename);
-        case FILE_ID:
-        case URL:
+        case FileFrom::FILE_ID:
+        case FileFrom::URL:
             args["video"] = filename;
             return execute("sendVideo", args);
         default:
@@ -358,10 +358,10 @@ string Api::sendVoice(string chat_id, FileFrom from, string filename)
 
     switch (from)
     {
-        case DISK:
+        case FileFrom::DISK:
             return executeSend("sendVoice", args, "voice", filename);
-        case FILE_ID:
-        case URL:
+        case FileFrom::FILE_ID:
+        case FileFrom::URL:
             args["voice"] = filename;
             return execute("sendVoice", args);
         default:
