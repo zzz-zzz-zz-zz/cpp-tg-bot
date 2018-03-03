@@ -11,12 +11,15 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <memory>
+#include <any>
 #include <nlohmann/json.hpp>
 #include <curl/curl.h>
 #include <map>
 #include <list>
 #include <optional>
 #include <exception>
+using std::shared_ptr;
 using std::string;
 using json = nlohmann::json;
 using map = std::map<string, string>;
