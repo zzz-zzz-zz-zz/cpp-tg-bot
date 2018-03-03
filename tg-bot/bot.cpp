@@ -17,30 +17,16 @@ Bot::~Bot()
 
 void Bot::start_polling()
 {
-    if (!update_flags) {
-        throw std::invalid_argument("0 callbacks specified!");
-    }
-    
-    std::cout << "Bot started polling...\n";
-
-    if (update_flags == Api::UpdateFilters::ALL && cb_All != nullptr) {
-        while (true)
-        {
-            list<Update> upds = api->getUpdates();
-
-            for (Update &u : upds)
-                cb_All(this, &u);
-        }
-    } else {
-        throw std::invalid_argument("No case for not ALL filters!");          
-    }
+    start_polling((i32_t)10);
 }
 
 void Bot::start_polling(i32_t timeout_s)
 {
-    if (!update_flags) {
+    if (cb_OnStart != nullptr)
+        cb_OnStart(this);
+
+    if (!update_flags) 
         throw std::invalid_argument("0 callbacks specified!");
-    }
     
     std::cout << "Bot started polling...\n";
 
@@ -51,29 +37,6 @@ void Bot::start_polling(i32_t timeout_s)
 
             for (Update &u : upds)
                 cb_All(this, &u);
-        }
-    } else {
-        throw std::invalid_argument("No case for not ALL filters!"); 
-    }
-}
-
-void Bot::start_polling(i32_t poll_interval_ms, i32_t timeout_s)
-{
-    if (!update_flags) {
-        throw std::invalid_argument("0 callbacks specified!");
-    }
-    
-    std::cout << "Bot started polling each " << poll_interval_ms << " ms...\n";
-
-    if (update_flags == Api::UpdateFilters::ALL && cb_All != nullptr) {
-        while (true)
-        {
-            list<Update> upds = api->getUpdates(timeout_s);
-
-            for (Update &u : upds)
-                cb_All(this, &u);
-
-            usleep(poll_interval_ms);
         }
     } else {
         throw std::invalid_argument("No case for not ALL filters!");
@@ -129,4 +92,9 @@ void Bot::on_update(void (*callback)(Bot *b, Update *u))
 {
     update_flags = Api::UpdateFilters::ALL;
     cb_All = callback;
+}
+
+void Bot::on_start(void (*callback)(Bot*))
+{
+    cb_OnStart = callback;
 }

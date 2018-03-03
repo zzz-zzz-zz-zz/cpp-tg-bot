@@ -14,10 +14,10 @@ public:
 
     bool has_updates();
 
+    void on_start(void (*callback)(Bot*));
     void on_update(i32_t update_filters, void (*callback)(Bot*, Update*));
     void on_update(void (*callback)(Bot*, Update*));
-    void start_polling(i32_t poll_interval_ms, i32_t timeout_s);
-    void start_polling(i32_t poll_interval_ms);
+    void start_polling(i32_t timeout_s);
     void start_polling();
 
     Api *api;
@@ -47,6 +47,8 @@ private:
     void (*cb_Pre_checkout_query)(Bot*, Update*) = nullptr;
 
     void (*cb_All)(Bot*, Update*) = nullptr;
+
+    void (*cb_OnStart)(Bot*) = nullptr;
 
     i32_t update_flags = UpdateFilters::NONE;
 };
