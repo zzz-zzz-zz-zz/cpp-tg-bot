@@ -9,6 +9,7 @@ class Chat
 public:
     Chat(string);
     Chat(json);
+    Chat(const Chat &that);
 
     enum Type {
         PRIVATE, GROUP, SUPERGROUP, CHANNEL
@@ -23,14 +24,11 @@ public:
     string get_first_name() { return first_name.value_or(""); }
     string get_last_name() { return last_name.value_or(""); }
     ChatPhoto get_photo();
-    ChatPhoto* get_photo_Ptr() { return photo; } // ADDITIONAL
     string get_description() { return description.value_or(""); }
     string get_invite_lint() { return description.value_or(""); }
     Message get_pinned_message();
-    Message* get_pinned_message_Ptr() { return pinned_message; } // ADDITIONAL
     string get_sticker_set_name() { return sticker_set_name.value_or(""); }
     bool get_can_set_sticker_set() { return can_set_sticker_set; }
-
     bool has_title() { return title.has_value(); }
     bool has_username() { return username.has_value(); }
     bool has_first_name() { return first_name.has_value(); }
@@ -48,10 +46,10 @@ private:
     optional<string> first_name = nullopt;
     optional<string> last_name = nullopt;
     bool all_members_are_administrators = false;
-    ChatPhoto *photo = nullptr;
+    shared_ptr<ChatPhoto> photo = nullptr;
     optional<string> description = nullopt;
     optional<string> invite_link = nullopt;
-    Message *pinned_message = nullptr;
+    shared_ptr<Message> pinned_message = nullptr;
     optional<string> sticker_set_name = nullopt;
     bool can_set_sticker_set = false;
 };
