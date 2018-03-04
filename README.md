@@ -11,7 +11,7 @@ Handy Telegram bot API wrapper. **IN DEVELOPMENT**.
 
 ## Simple Example
 
-```
+```C++
 #include "tg-bot/bot.hpp"
 
 #include <iostream>
