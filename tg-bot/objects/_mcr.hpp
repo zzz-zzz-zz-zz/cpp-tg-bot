@@ -21,6 +21,12 @@ unsigned int hash(const char* str, int h=0)
     return !str[h] ? 5381 : (hash(str, h+1)*33) ^ str[h];
 }
 
+// Returns parts of string &s delimited by &c
+// const vector<string> string_explode(const string &s, const char &c)
+// {
+	
+// }
+
 // Omit json::out_of_range exception
 #define OMIT(code)\
     try {\

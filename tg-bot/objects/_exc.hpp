@@ -55,5 +55,13 @@ public:
     }
 };
 
+class TelegramHandlerException : public TelegramException
+{
+public:
+    TelegramHandlerException(const std::string msg="No message specified!")
+    {
+        message = "TelegramHandlerException: " + msg;
+    }
+};
 
 #endif // __TGBOT_EXCEPTIONS
