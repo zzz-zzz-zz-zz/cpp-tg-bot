@@ -29,7 +29,7 @@ User Api::getMe()
 list<Update> Api::getUpdates()
 {
     return getUpdates(10, true);
-};
+}
 
 list<Update> Api::getUpdates(bool validate)
 {
@@ -54,7 +54,7 @@ list<Update> Api::getUpdates(i32_t timeout_s, bool validate)
     json jupdates = json::parse(execute("getUpdates", args));
 
     if (!jupdates.at("ok").get<bool>())
-        throw std::invalid_argument("Error response from getUpdates()!");
+        throw TelegramBadRequestException("Error response from getUpdates()!");
 
     for (json &j : jupdates.at("result").get<list<json>>())
         updates.push_back(Update(j));
@@ -249,7 +249,7 @@ string Api::sendPhoto(string chat_id, FileFrom from, string filename)
             args["photo"] = filename;
             return execute("sendPhoto", args);
         default:
-            throw std::invalid_argument("Invalid file type!");
+            throw TelegramBadRequestException("Invalid file type!");
     }
 }
 /*==================== END OF sendPhoto ====================*/
@@ -278,7 +278,7 @@ string Api::sendAudio(string chat_id, FileFrom from, string filename)
             args["audio"] = filename;
             return execute("sendAudio", args);
         default:
-            throw std::invalid_argument("Invalid file type!");
+            throw TelegramBadRequestException("Invalid file type!");
     }
 }
 /*==================== END OF sendAudio ====================*/
@@ -307,7 +307,7 @@ string Api::sendDocument(string chat_id, FileFrom from, string filename)
             args["document"] = filename;
             return execute("sendDocument", args);
         default:
-            throw std::invalid_argument("Invalid file type!");
+            throw TelegramBadRequestException("Invalid file type!");
     }
 }
 /*==================== END OF sendDocument ====================*/
@@ -336,7 +336,7 @@ string Api::sendVideo(string chat_id, FileFrom from, string filename)
             args["video"] = filename;
             return execute("sendVideo", args);
         default:
-            throw std::invalid_argument("Invalid file type!");
+            throw TelegramBadRequestException("Invalid file type!");
     }
 }
 /*==================== END OF sendVideo ====================*/
@@ -365,7 +365,7 @@ string Api::sendVoice(string chat_id, FileFrom from, string filename)
             args["voice"] = filename;
             return execute("sendVoice", args);
         default:
-            throw std::invalid_argument("Invalid file type!");
+            throw TelegramBadRequestException("Invalid file type!");
     }
 }
 /*==================== END OF sendVoice ====================*/
@@ -717,7 +717,7 @@ string Api::execute(const char *method, map args)
     //std::cout << req << std::endl;
 
     curl = curl_easy_init();
-    if (curl) 
+    if (curl)
     {
         curl_easy_setopt(curl, CURLOPT_VERBOSE, 0); //remove this to disable verbose output
         curl_easy_setopt(curl, CURLOPT_URL, req.c_str());
@@ -727,15 +727,23 @@ string Api::execute(const char *method, map args)
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &res);
 
         if (curl_easy_perform(curl) != CURLE_OK)
-            std::cerr << "curl_easy_perform() failed!" << std::endl;
-    } 
-    else 
+        {
+            res = "curl_easy_perform() failed!";
+            goto on_err;
+        }
+    }
+    else
     {
-        std::cerr << "curl_easy_init() failed!" << std::endl;        
+        res = "curl_easy_init() failed!";
+        goto on_err;
     }
     curl_easy_cleanup(curl);
 
     return res;
+
+on_err:
+    curl_easy_cleanup(curl);
+    throw TelegramBadRequestException(res);
 }
 
 string Api::execute(const char *method, json args)
@@ -746,7 +754,7 @@ string Api::execute(const char *method, json args)
     std::string req = "https://api.telegram.org/bot" + token + "/" + method;
     
     curl = curl_easy_init();
-    if (curl) 
+    if (curl)
     {
         curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L); // remove this to disable verbose output
         curl_easy_setopt(curl, CURLOPT_URL, req.c_str());
@@ -759,15 +767,23 @@ string Api::execute(const char *method, json args)
         //std::cout << req << std::endl;
 
         if (curl_easy_perform(curl) != CURLE_OK)
-            std::cerr << "curl_easy_perform() failed!" << std::endl;
-    } 
-    else 
+        {
+            res = "curl_easy_perform() failed!";
+            goto on_err;
+        }
+    }
+    else
     {
-        std::cerr << "curl_easy_init() failed!" << std::endl;        
+        res = "curl_easy_init() failed!";
+        goto on_err;
     }
     curl_easy_cleanup(curl);
 
     return res;
+
+on_err:
+    curl_easy_cleanup(curl);
+    throw TelegramBadRequestException(res);
 }
 
 string Api::executeSend(const char *method, map args, const char *fieldname, string filename)
@@ -782,7 +798,7 @@ string Api::executeSend(const char *method, map args, const char *fieldname, str
     curl = curl_easy_init();
     if (curl)
     {
-        curl_formadd(&formpost, &lastptr, 
+        curl_formadd(&formpost, &lastptr,
             CURLFORM_COPYNAME, fieldname,
             CURLFORM_FILE, filename.c_str(),
             CURLFORM_END
@@ -790,7 +806,7 @@ string Api::executeSend(const char *method, map args, const char *fieldname, str
 
         for (auto it = args.begin(); it != args.end(); it++)
         {
-            curl_formadd(&formpost, &lastptr, 
+            curl_formadd(&formpost, &lastptr,
                 CURLFORM_COPYNAME, it->first.c_str(),
                 CURLFORM_COPYCONTENTS, it->second.c_str(),
                 CURLFORM_END
@@ -804,17 +820,26 @@ string Api::executeSend(const char *method, map args, const char *fieldname, str
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &res);
 
         if (curl_easy_perform(curl) != CURLE_OK)
-            std::cerr << "curl_easy_perform() failed!" << std::endl;
+        {
+            res = "curl_easy_perform() failed!";
+            goto on_err;
+        }
 
         curl_formfree(formpost);
-    } 
-    else 
+    }
+    else
     {
-        std::cerr << "curl_easy_init() failed!" << std::endl;
+        res = "curl_easy_init() failed!";
+        goto on_err;
     }
     curl_easy_cleanup(curl);
 
     return res;
+
+on_err:
+    curl_formfree(formpost);
+    curl_easy_cleanup(curl);
+    throw TelegramBadRequestException(res);
 }
 
 
