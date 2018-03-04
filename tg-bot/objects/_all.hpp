@@ -6,6 +6,8 @@
 #include "_mcr.hpp"
 #include "_exc.hpp"
 
+#include "../bot.hpp"
+#include "../api.hpp"
 
 #include "audio.hpp"
 #include "callbackquery.hpp"

@@ -18,23 +18,27 @@ Message::Message(json j)
     message_id = j.at("message_id").get<int>();
     date = j.at("date").get<int>();
     chat = std::make_shared<Chat>(j.at("chat").get<json>());
+    from = std::make_shared<User>(j.at("from").get<json>());
 
-    try {
-        from = std::make_shared<User>(j.at("from").get<json>());
-    } catch (exception &e) {
-        std::cerr << "Message::Message(json): from is empty!" << std::endl;
-        from = nullptr;
-    }
-
-    OMIT(text = string(j.at("text").get<string>()))
-    OMIT(audio = std::make_shared<Audio>(j.at("audio").get<json>()))
-    OMIT(document = std::make_shared<Document>(j.at("document").get<json>()))
+    OMIT(text = string(j.at("text").get<string>()); 
+        checks += UpdateFilters::TEXT;
+        if (text.value()[0] == '/')
+            checks += UpdateFilters::COMMAND;
+    )
+    OMIT(audio = std::make_shared<Audio>(j.at("audio").get<json>());
+        checks += UpdateFilters::AUDIO; 
+    )
+    OMIT(document = std::make_shared<Document>(j.at("document").get<json>());
+        checks += UpdateFilters::DOCUMENT;         
+    )
     OMIT(
         json jphoto = j.at("photo");
         photo = std::make_shared<vector<PhotoSize>>();
 
         for (json::iterator it = jphoto.begin(); it != jphoto.end(); it++)
             photo->push_back(PhotoSize(*it));
+
+        checks += UpdateFilters::PHOTO; 
     )
 
     std::cout << "TOFINISH: Message::Message(json)!" << std::endl;
@@ -51,6 +55,7 @@ Message::Message(const Message &that)
     audio = that.audio; //shared_ptr
     photo = that.photo;
     document = that.document;
+    checks = that.checks;
 }
 
 Message::Message(Message &&that) noexcept
@@ -63,6 +68,7 @@ Message::Message(Message &&that) noexcept
     audio = std::move(that.audio);
     photo = std::move(that.photo);
     document = std::move(that.document);
+    checks = std::move(that.checks);    
 }
 
 

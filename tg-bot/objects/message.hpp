@@ -35,11 +35,14 @@ public:
         return photo ? *photo : vector<PhotoSize>();
     }
 
+
     bool has_document() const noexcept { return document != nullptr; }
     Document get_document();
 
+    i32_t get_checks() const noexcept { return checks; }
     //
 private:
+    i32_t checks = 0;
     int message_id;
     shared_ptr<User> from = nullptr;
     int date;
