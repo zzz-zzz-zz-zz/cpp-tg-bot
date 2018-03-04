@@ -9,6 +9,38 @@ Handy Telegram bot API wrapper. **IN DEVELOPMENT**.
   - [nlohmann/json](https://www.github.com/nlohmann/json)(1 .hpp file. Easy to remove this dep)
 - Realized bot features: *polling*, *callbacks*
 
+## Simple Example
+
+```
+#include "tg-bot/bot.hpp"
+#include <iostream>
+
+/// EXAMPLE OF ECHOBOT: BOT WHICH REPEATING ALL TEXT MESSAGES YOU SEND
+int main(int argc, char *argv[])
+{
+    Bot b("---TOKEN---");
+
+    b.on_start([](Bot *bot)
+    {
+        std::cout << "Bot @" << bot->api->getMe().get_username() << " started!" << std::endl;
+    });
+    b.on_update([](Bot *bot, Update *update) 
+    {
+        if (!update->has_message())
+            return;
+            
+        Message m = update->get_message();
+        if (m.has_text())
+        {
+            bot->api->sendMessage(m.get_chat().get_id(), m.get_text());
+        }
+    });
+    b.start_polling();
+
+    return 0;
+}
+```
+
 ## Realised API methods:
 |Method name|Status|Overloads|Note|
 |---|---|---|---|
