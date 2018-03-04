@@ -3,10 +3,16 @@
 #include <unistd.h>
 
 
-void Bot::add_handler(MessageHandler h)
+void Bot::on_message(i32_t filterflags, std::function<void(Bot*, Update*)> callback)
 {
+    if (filterflags == UpdateFilters::ALL_OTHERS)
+        filterflags = ~registered_filters;
+
+
+    MessageHandler h(filterflags, callback);
+
     if (registered_filters & h.filters)
-        throw TelegramException("Attempt to rewrite already defined callback for filter!");
+        throw TelegramHandlerException("Attempt to rewrite already defined callback for filter!");
 
     registered_filters |= h.filters;
     
@@ -26,8 +32,10 @@ void Bot::add_handler(MessageHandler h)
         handler_Sticker = std::make_shared<MessageHandler>(h);
 }
 
-void Bot::add_handler(CommandHandler h)
+void Bot::on_command(string command, std::function<void(Bot*, Update*)> callback)
 {
+    CommandHandler h(command, callback);
+
     handlers_Command.push_back(h);
     registered_filters |= UpdateFilters::COMMAND;
 }
@@ -70,14 +78,29 @@ void Bot::start_polling(i32_t timeout_s)
                 i32_t update_checks = u.get_message().get_checks();
                 i32_t able_checks = update_checks & registered_filters;
 
-                std::cout << "update_checks = " << update_checks << std::endl;
-                std::cout << "able_checks = " << able_checks << std::endl;
-                std::cout << "UpdateFilters::COMMAND = " << UpdateFilters::COMMAND << std::endl;
-                std::cout << "able_checks & UpdateFilters::COMMAND = " << (able_checks & UpdateFilters::COMMAND) << std::endl;
-                
                 if (able_checks & UpdateFilters::COMMAND)
                 {
-                    vector<string> words = {"/start"};//string_explode(m.get_text(), ' ');
+                    // string_explode!                    
+                    string buff = "";
+                    vector<string> words;                    
+                    
+                    for (const auto &n : m.get_text())
+                    {
+                        if (n != ' ')
+                        {
+                            buff += n;             
+                        } 
+                        else if (n == ' ' && buff != "") 
+                        { 
+                            words.push_back(buff); 
+                            buff = "";
+                        }
+                    }
+
+                    if (buff != "") 
+                        words.push_back(buff);
+                    // string_explode!
+
                     string cmd = words[0];
 
 
@@ -126,10 +149,6 @@ bool Bot::has_updates()
     return api->getUpdates(false).size() > 0;
 }
 
-void Bot::on_update(std::function<void(Bot*, Update*)> callback)
-{
-    cb_All = callback;
-}
 
 void Bot::on_start(std::function<void(Bot*)> callback)
 {

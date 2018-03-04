@@ -6,6 +6,7 @@
 
 enum UpdateFilters
 {
+    ALL_OTHERS = -9000,
     NONE     = 0,
     TEXT     = 0b0000000000000001,
     AUDIO    = 0b0000000000000010,
@@ -19,29 +20,6 @@ enum UpdateFilters
     ALL      = 0b1111111111111111
 };
 
-// const vector<string> string_explode(const string &s, const char &c)
-// {
-// 	string buff = "";
-// 	vector<string> v;
-	
-// 	for (const auto &n : s)
-// 	{
-// 		if (n != c)
-//         {
-//             buff += n;             
-//         } 
-//         else if (n == c && buff != "") 
-//         { 
-//             v.push_back(buff); 
-//             buff = "";
-//         }
-// 	}
-
-// 	if (buff != "") 
-//         v.push_back(buff);
-	
-// 	return v;
-// }
 
 class Handler
 {
@@ -87,15 +65,14 @@ public:
     bool has_updates();
 
     void on_start(std::function<void(Bot*)> callback);
-    void on_update(std::function<void(Bot*, Update*)> callback);
-    void add_handler(CommandHandler h);
-    void add_handler(MessageHandler h);
+    void on_command(string command, std::function<void(Bot*, Update*)> callback);
+    void on_message(i32_t filterflags, std::function<void(Bot*, Update*)> callback);
+
     void start_polling(i32_t timeout_s);
     void start_polling();
 
     Api *api;
 private:
-    std::function<void(Bot*, Update*)> cb_All = nullptr;
     std::function<void(Bot*)> cb_OnStart = nullptr;
     
     i32_t registered_filters = 0;
