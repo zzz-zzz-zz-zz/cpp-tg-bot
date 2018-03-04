@@ -714,7 +714,7 @@ string Api::execute(const char *method, map args)
         req.append(it->second);
     }
 
-    std::cout << req << std::endl;
+    //std::cout << req << std::endl;
 
     curl = curl_easy_init();
     if (curl) 
@@ -756,7 +756,7 @@ string Api::execute(const char *method, json args)
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &res);
 
-        std::cout << req << std::endl;
+        //std::cout << req << std::endl;
 
         if (curl_easy_perform(curl) != CURLE_OK)
             std::cerr << "curl_easy_perform() failed!" << std::endl;

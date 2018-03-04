@@ -29,7 +29,7 @@ public:
         DISK,    // Filename on disk(full or relative)
     };
 
-    class ParseMode 
+    class ParseMode
     {
         public:
             static const char *HTML;
