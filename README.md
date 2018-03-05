@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 |forwardMessage|Good|+7|☝️|
 |sendPhoto|Raw|+1|*TODO: overloads?*|
 |sendAudio|Raw|+1|`Audio` is not realized yet|
-|sendDocument|Raw|+1|`Document` is not realized yet|
+|sendDocument|Raw|+1|*TODO: overloads?*|
 |sendVideo|Raw|+1|`Video` is not realized yet|
 |sendVoice|Raw|+1|`Voice` is not realized yet|
 |sendVideoNote|TODO||`VideoNote` is not realized yet|
