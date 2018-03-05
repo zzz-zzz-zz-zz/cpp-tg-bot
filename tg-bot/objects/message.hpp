@@ -12,10 +12,10 @@ public:
     Message(const Message &that);
     Message(Message &&that) noexcept;
 
-    int get_message_id() { return message_id; }
-    int get_date() { return date; }
-    Chat get_chat();
-    User get_from();
+    int get_message_id() const noexcept { return message_id; }
+    int get_date() const noexcept { return date; }
+    Chat get_chat() const noexcept;
+    User get_from() const noexcept;
 
     string get_text() { return text.value_or(""); }
     bool has_text() { return text.has_value(); }
@@ -37,7 +37,10 @@ public:
 
 
     bool has_document() const noexcept { return document != nullptr; }
-    Document get_document();
+    Document get_document() const;
+
+    bool has_sticker() const noexcept { return sticker != nullptr; }
+    Sticker get_sticker() const;
 
     i32_t get_checks() const noexcept { return checks; }
     //
@@ -63,7 +66,7 @@ private:
     shared_ptr<Document> document = nullptr;
     // Game *game;
     shared_ptr<vector<PhotoSize>> photo = nullptr; //!! >> | > >
-    // Sticker *sticker;
+    shared_ptr<Sticker> sticker = nullptr;
     // Video *video;
     // Voice *voice;
     // VideoNote *videonote;

@@ -31,6 +31,9 @@ Message::Message(json j)
     OMIT(document = std::make_shared<Document>(j.at("document").get<json>());
         checks += UpdateFilters::DOCUMENT;         
     )
+    OMIT(sticker = std::make_shared<Sticker>(j.at("sticker").get<json>());
+        checks += UpdateFilters::STICKER;
+    )
     OMIT(
         json jphoto = j.at("photo");
         photo = std::make_shared<vector<PhotoSize>>();
@@ -55,6 +58,8 @@ Message::Message(const Message &that)
     audio = that.audio; //shared_ptr
     photo = that.photo;
     document = that.document;
+    sticker = that.sticker;
+
     checks = that.checks;
 }
 
@@ -68,29 +73,32 @@ Message::Message(Message &&that) noexcept
     audio = std::move(that.audio);
     photo = std::move(that.photo);
     document = std::move(that.document);
+    sticker = std::move(that.sticker);
+    
     checks = std::move(that.checks);    
 }
 
 
 
 
-Chat Message::get_chat() {
-    if (!chat) // Most likely !!EXCESS!! check
-        throw TelegramNullObjectException("Message::get_chat(): chat is empty!");
-    
+Chat Message::get_chat() const noexcept {
     return *chat;
 }
 
-User Message::get_from() {
-    if (!from) // Most likely !!EXCESS!! check
-        throw TelegramNullObjectException("Message::get_from(): from is empty!");
-
+User Message::get_from() const noexcept {
     return *from;
 }
 
-Document Message::get_document()
+Document Message::get_document() const
 {
     if (!document)
-        throw TelegramNullObjectException("No document!");
+        throw TelegramNullObjectException("No document in message!");
     return *document;
+}
+
+Sticker Message::get_sticker() const
+{
+    if (!sticker)
+        throw TelegramNullObjectException("No sticker in message!");
+    return *sticker;
 }
