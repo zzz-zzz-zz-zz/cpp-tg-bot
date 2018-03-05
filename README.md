@@ -113,7 +113,8 @@ int main(int argc, char *argv[])
 |User|Done||
 |Chat|Good|*TODO: Add move-constr, operator=*|
 |Message|Raw|A lot of *TODO* there|
-|PhotoSize|Nice|**TODO: tests**|
+|PhotoSize|Nice|*TODO: tests?*|
+|Sticker|Nice|*TODO: `MaskPosition`*|
 |**Empty or nonexistent types**|**...**|**TODO next types**|
 
 ## TODO list:
