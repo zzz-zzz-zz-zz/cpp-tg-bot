@@ -11,8 +11,10 @@ void Bot::on_message(i32_t filterflags, std::function<void(Bot*, Update*)> callb
 
     MessageHandler h(filterflags, callback);
 
-    if (registered_filters & h.filters)
-        throw TelegramHandlerException("Attempt to rewrite already defined callback for filter!");
+    if (i32_t regf = registered_filters & h.filters; regf)
+        std::cerr << "Warning: Reassigning callback(-s) for filters " 
+                  << std::bitset<16>(regf).to_string() << std::endl;
+        //throw TelegramHandlerException("Attempt to rewrite already defined callback for filter!");
 
     registered_filters |= h.filters;
     
@@ -34,9 +36,12 @@ void Bot::on_message(i32_t filterflags, std::function<void(Bot*, Update*)> callb
 
 void Bot::on_command(string command, std::function<void(Bot*, Update*)> callback)
 {
-    CommandHandler h(command, callback);
+    command.insert(0, 1, '/');
 
-    handlers_Command.push_back(h);
+    if (handlers_Command.count(command))
+        std::cerr << "Warning: Reassigning command \"" << command << "\"" << std::endl;
+
+    handlers_Command[command] = CommandHandler(command, callback);
     registered_filters |= UpdateFilters::COMMAND;
 }
 
@@ -103,17 +108,14 @@ void Bot::start_polling(i32_t timeout_s)
 
                     string cmd = words[0];
 
-
-                    for (CommandHandler &h : handlers_Command)
-                        if (cmd == h.get_command())
-                        {
-                            h.callback(this, &u);
-                            break;                            
-                        }
-                        else
-                        {
-                            std::cout << "No CmdHandler for " << cmd << std::endl;                            
-                        }
+                    if (handlers_Command.count(cmd))
+                    {
+                        handlers_Command[cmd].callback(this, &u);
+                    }
+                    else
+                    {
+                        std::cout << "No CmdHandler for " << cmd << std::endl;
+                    }
                 }
                 else
                 {

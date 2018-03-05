@@ -21,39 +21,40 @@ enum UpdateFilters
 };
 
 
-class Handler
+class MessageHandler
 {
-protected:
-    Handler(i32_t filters, std::function<void(Bot*, Update*)> callback)
-    {
+public:
+    MessageHandler(i32_t filters, std::function<void(Bot*, Update*)> callback)
+    { 
         this->filters = filters;
         this->callback = callback;
     }
 
+private:
     i32_t filters;
     std::function<void(Bot*, Update*)> callback;
 
-    friend class Bot;
+    friend class Bot;    
 };
 
-class MessageHandler : public Handler
-{
-public:
-    MessageHandler(i32_t filters, std::function<void(Bot*, Update*)> callback)
-            : Handler(filters, callback)
-    { }
-};
-
-class CommandHandler : public Handler
+class CommandHandler
 {
 public:
     CommandHandler(string command, std::function<void(Bot*, Update*)> callback)
-            : Handler(UpdateFilters::COMMAND, callback), command("/" + command)
-    { }
+    { 
+        this->filters = UpdateFilters::COMMAND;
+        this->callback = callback;
+        this->command = "/" + command;
+    }
 
-    string get_command() { return command; }
+    CommandHandler() {}
+
 private:
+    i32_t filters;
+    std::function<void(Bot*, Update*)> callback;
     string command;
+
+    friend class Bot;    
 };
 
 class Bot
@@ -81,7 +82,7 @@ private:
     shared_ptr<MessageHandler> handler_Video = nullptr;
     shared_ptr<MessageHandler> handler_Document = nullptr;
     shared_ptr<MessageHandler> handler_Voice = nullptr;
-    vector<CommandHandler> handlers_Command;
+    std::map<string, CommandHandler> handlers_Command;
     shared_ptr<MessageHandler> handler_Photo = nullptr;
     shared_ptr<MessageHandler> handler_Sticker = nullptr;
 };
