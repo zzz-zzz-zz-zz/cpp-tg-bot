@@ -114,6 +114,7 @@ int main(int argc, char *argv[])
 |Chat|Good|*TODO: Add move-constr, operator=*|
 |Message|Raw|A lot of *TODO* there|
 |PhotoSize|Nice|*TODO: tests?*|
+|Document|Nice||
 |Sticker|Nice|*TODO: `MaskPosition`*|
 |**Empty or nonexistent types**|**...**|**TODO next types**|
 
