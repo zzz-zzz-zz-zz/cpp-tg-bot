@@ -4,8 +4,8 @@
 /**
  * Gathering of 3rd party includes
  **/
-
 #include <stdlib.h>
+#include <bitset>
 #include <cstdint>
 #include <variant>
 #include <sstream>
