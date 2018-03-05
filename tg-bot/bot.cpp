@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 
-void Bot::on_message(i32_t filterflags, std::function<void(Bot, Message)> callback)
+void Bot::on_message(i32_t filterflags, std::function<void(Bot&, Message&)> callback)
 {
     if (filterflags == UpdateFilters::ALL_OTHERS)
         filterflags = ~registered_filters;
@@ -34,7 +34,7 @@ void Bot::on_message(i32_t filterflags, std::function<void(Bot, Message)> callba
         handler_Sticker = std::make_shared<MessageHandler>(h);
 }
 
-void Bot::on_command(string command, std::function<void(Bot, Update)> callback)
+void Bot::on_command(string command, std::function<void(Bot&, Update&)> callback)
 {
     command.insert(0, 1, '/');
 
@@ -78,9 +78,7 @@ void Bot::start_polling(i32_t timeout_s)
     
         while (true)
         {
-            list<Update> upds = api->getUpdates(timeout_s);
-
-            for (Update &u : upds)
+            for (Update &u : api->getUpdates(timeout_s))
             {
                 if (!u.has_message()) // TODO: NOT ONLY MESSAGES
                     continue;
@@ -160,7 +158,7 @@ bool Bot::has_updates()
 }
 
 
-void Bot::on_start(std::function<void(Bot)> callback)
+void Bot::on_start(std::function<void(Bot&)> callback)
 {
     cb_OnStart = callback;
 }
