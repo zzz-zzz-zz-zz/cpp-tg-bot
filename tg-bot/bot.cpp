@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 
-void Bot::on_message(i32_t filterflags, std::function<void(Bot*, Update*)> callback)
+void Bot::on_message(i32_t filterflags, std::function<void(Bot, Message)> callback)
 {
     if (filterflags == UpdateFilters::ALL_OTHERS)
         filterflags = ~registered_filters;
@@ -34,7 +34,7 @@ void Bot::on_message(i32_t filterflags, std::function<void(Bot*, Update*)> callb
         handler_Sticker = std::make_shared<MessageHandler>(h);
 }
 
-void Bot::on_command(string command, std::function<void(Bot*, Update*)> callback)
+void Bot::on_command(string command, std::function<void(Bot, Update)> callback)
 {
     command.insert(0, 1, '/');
 
@@ -51,6 +51,12 @@ Bot::Bot(string token)
     api = new Api(token);
 }
 
+Bot::Bot(const Bot &that)
+{
+    api = new Api(*(that.api));
+}
+
+
 Bot::~Bot()
 {
     delete api;
@@ -64,7 +70,7 @@ void Bot::start_polling()
 void Bot::start_polling(i32_t timeout_s)
 {
     if (cb_OnStart != nullptr)
-        cb_OnStart(this);
+        cb_OnStart(*this);
 
     if (registered_filters != UpdateFilters::NONE) 
     {
@@ -110,7 +116,7 @@ void Bot::start_polling(i32_t timeout_s)
 
                     if (handlers_Command.count(cmd))
                     {
-                        handlers_Command[cmd].callback(this, &u);
+                        handlers_Command[cmd].callback(*this, u);
                     }
                     else
                     {
@@ -119,20 +125,22 @@ void Bot::start_polling(i32_t timeout_s)
                 }
                 else
                 {
+                    Message m = u.get_message();
+
                     if (able_checks & UpdateFilters::TEXT)
-                        handler_Text->callback(this, &u);
+                        handler_Text->callback(*this, m);
                     else if (able_checks & UpdateFilters::AUDIO)
-                        handler_Audio->callback(this, &u);
+                        handler_Audio->callback(*this, m);
                     else if (able_checks & UpdateFilters::VIDEO)
-                        handler_Video->callback(this, &u);
+                        handler_Video->callback(*this, m);
                     else if (able_checks & UpdateFilters::DOCUMENT)
-                        handler_Document->callback(this, &u);
+                        handler_Document->callback(*this, m);
                     else if (able_checks & UpdateFilters::VOICE)
-                        handler_Voice->callback(this, &u);
+                        handler_Voice->callback(*this, m);
                     else if (able_checks & UpdateFilters::PHOTO)
-                        handler_Photo->callback(this, &u);
+                        handler_Photo->callback(*this, m);
                     else if (able_checks & UpdateFilters::STICKER)
-                        handler_Sticker->callback(this, &u);
+                        handler_Sticker->callback(*this, m);
                 }
 
 
@@ -152,7 +160,7 @@ bool Bot::has_updates()
 }
 
 
-void Bot::on_start(std::function<void(Bot*)> callback)
+void Bot::on_start(std::function<void(Bot)> callback)
 {
     cb_OnStart = callback;
 }

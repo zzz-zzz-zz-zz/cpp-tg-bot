@@ -24,7 +24,7 @@ enum UpdateFilters
 class MessageHandler
 {
 public:
-    MessageHandler(i32_t filters, std::function<void(Bot*, Update*)> callback)
+    MessageHandler(i32_t filters, std::function<void(Bot, Message)> callback)
     { 
         this->filters = filters;
         this->callback = callback;
@@ -32,7 +32,7 @@ public:
 
 private:
     i32_t filters;
-    std::function<void(Bot*, Update*)> callback;
+    std::function<void(Bot, Message)> callback;
 
     friend class Bot;    
 };
@@ -40,7 +40,7 @@ private:
 class CommandHandler
 {
 public:
-    CommandHandler(string command, std::function<void(Bot*, Update*)> callback)
+    CommandHandler(string command, std::function<void(Bot, Update)> callback)
     { 
         this->filters = UpdateFilters::COMMAND;
         this->callback = callback;
@@ -51,7 +51,7 @@ public:
 
 private:
     i32_t filters;
-    std::function<void(Bot*, Update*)> callback;
+    std::function<void(Bot, Update)> callback;
     string command;
 
     friend class Bot;    
@@ -61,20 +61,21 @@ class Bot
 {
 public:
     Bot(string);
+    Bot(const Bot&);
     ~Bot();
 
     bool has_updates();
 
-    void on_start(std::function<void(Bot*)> callback);
-    void on_command(string command, std::function<void(Bot*, Update*)> callback);
-    void on_message(i32_t filterflags, std::function<void(Bot*, Update*)> callback);
+    void on_start(std::function<void(Bot)> callback);
+    void on_command(string command, std::function<void(Bot, Update)> callback);
+    void on_message(i32_t filterflags, std::function<void(Bot, Message)> callback);
 
     void start_polling(i32_t timeout_s);
     void start_polling();
 
     Api *api;
 private:
-    std::function<void(Bot*)> cb_OnStart = nullptr;
+    std::function<void(Bot)> cb_OnStart = nullptr;
     
     i32_t registered_filters = 0;
     shared_ptr<MessageHandler> handler_Text = nullptr;
