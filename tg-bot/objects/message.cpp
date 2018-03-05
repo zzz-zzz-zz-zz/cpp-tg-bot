@@ -48,6 +48,11 @@ Message::Message(json j)
     // TODO: other
 }
 
+i32_t Message::get_chat_id() const noexcept
+{
+    return chat->get_id();
+}
+
 Message::Message(const Message &that)
 {
     message_id = that.message_id;
@@ -74,7 +79,7 @@ Message::Message(Message &&that) noexcept
     photo = std::move(that.photo);
     document = std::move(that.document);
     sticker = std::move(that.sticker);
-    
+
     checks = std::move(that.checks);    
 }
 

@@ -17,6 +17,8 @@ public:
     Chat get_chat() const noexcept;
     User get_from() const noexcept;
 
+    i32_t get_chat_id() const noexcept;
+
     string get_text() { return text.value_or(""); }
     bool has_text() { return text.has_value(); }
 
