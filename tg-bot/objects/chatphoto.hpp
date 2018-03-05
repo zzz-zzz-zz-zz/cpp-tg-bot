@@ -8,7 +8,7 @@ class ChatPhoto
 {
 public:
     ChatPhoto(string);
-    ChatPhoto(json);
+    ChatPhoto(json&&);
     ChatPhoto(const ChatPhoto &that);
     ChatPhoto& operator=(const ChatPhoto &that);
 };

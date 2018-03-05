@@ -8,7 +8,7 @@ class Document
 {
 public:
     Document(string);
-    Document(json);
+    Document(json&&);
 
     string get_file_id() const noexcept
     {

@@ -8,7 +8,7 @@ class Message
 {
 public:
     Message(string jstr);
-    Message(json j);
+    Message(json &&j);
     Message(const Message &that);
     Message(Message &&that) noexcept;
 

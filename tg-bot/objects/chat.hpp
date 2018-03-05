@@ -8,7 +8,7 @@ class Chat
 {
 public:
     Chat(string);
-    Chat(json);
+    Chat(json&&);
     Chat(const Chat &that);
 
     enum Type {

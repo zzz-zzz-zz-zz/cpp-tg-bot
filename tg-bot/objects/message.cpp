@@ -4,7 +4,7 @@ Message::Message(string jstr) : Message::Message(json::parse(jstr))
 {
 }
 
-Message::Message(json j)
+Message::Message(json &&j)
 {
     std::cout << "TODO: Message::Message(json) JSON: " << j.dump(2) << std::endl;
 

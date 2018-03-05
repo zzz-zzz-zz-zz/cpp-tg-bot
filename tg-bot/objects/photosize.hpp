@@ -9,7 +9,8 @@ class PhotoSize
 public:
     PhotoSize() {}
     PhotoSize(string jstr);
-    PhotoSize(json j);
+    PhotoSize(json &j);
+    PhotoSize(json &&j);
 
     string get_file_id() const noexcept { return file_id; }
     i32_t get_width() const noexcept { width > 0 ? width : 0; }

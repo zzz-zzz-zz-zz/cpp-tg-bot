@@ -16,7 +16,7 @@ Chat::Chat(string jstr) : Chat::Chat(json::parse(jstr))
 {
 }
 
-Chat::Chat(json j)
+Chat::Chat(json &&j)
 {
     id = j["id"].get<int>();
     
