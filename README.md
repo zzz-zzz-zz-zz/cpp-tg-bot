@@ -3,7 +3,7 @@ Handy Telegram bot API wrapper. **IN DEVELOPMENT**.
 
 ## Status
 - Current status: **In Development**
-- Version: __0.1a__
+- Version: __0.3a__
 - Depencencies: 
   - [libcurl](https://www.github.com/curl/curl)(install with [this guide](https://curl.haxx.se/docs/install.html))
   - [nlohmann/json](https://www.github.com/nlohmann/json)(1 .hpp file. Easy to remove this dep)
