@@ -20,14 +20,14 @@ using std::vector;
 
 const i32_t admin_id = 354454314; // It's my chat_id. Just for example needs
 
-void on_cmd_start(Bot bot, Update update)
+void on_cmd_start(Bot &bot, Update &upd)
 {
-    bot.api->sendMessage(update.get_message().get_chat_id(), "Hello!");
+    bot.api->sendMessage(upd.get_message().get_chat_id(), "Hello!");
 }
 
-void echo_photo(Bot bot, Message msg)
+void echo_photo(Bot &bot, Message &msg)
 {
-    i32_t chat_id = msg.get_chat().get_id();
+    i32_t chat_id = msg.get_chat_id();
     string file_id = msg.get_photo()[0].get_file_id();
 
     bot.api->sendPhoto(chat_id, Api::FileFrom::FILE_ID, file_id);
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     string hello = "Hello world!";
 
     // Register callback(as lambda) on when bot launched
-    b.on_start([](Bot bot) {
+    b.on_start([](Bot &bot) {
         bot.api->sendMessage(admin_id, "Bot started!");
     });
 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     b.on_command("start", on_cmd_start);
 
     // Capturing variables into lambda also works as expected
-    b.on_command("hello", [&](Bot bot, Message msg) {
+    b.on_command("hello", [&](Bot &bot, &Message msg) {
         // const is optional
         const i32_t chat_id = msg.get_chat_id();
         
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
 
     // Register callback on when it's plain text message(and not command obviously)
-    b.on_message(UpdateFilters::TEXT, [](Bot bot, Message msg) {
+    b.on_message(UpdateFilters::TEXT, [](Bot &bot, Message &msg) {
         i32_t chat_id = msg.get_chat_id();
 
         bot->api->sendMessage(chat_id, msg.get_text());
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     b.on_message(UpdateFilters::PHOTO, echo_photo);
 
     // Callback on when it's not TEXT or PHOTO(declared above)(and not command obviously)
-    b.on_message(UpdateFilters::ALL_OTHERS, [](Bot bot, Message msg) {
+    b.on_message(UpdateFilters::ALL_OTHERS, [](Bot &bot, Message &msg) {
         i32_t chat_id = msg.get_chat_id();
 
         bot->api->sendMessage(chat_id, "Not photo or text!");
