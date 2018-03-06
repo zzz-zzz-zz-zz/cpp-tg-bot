@@ -16,6 +16,7 @@
 #include <nlohmann/json.hpp>
 #include <curl/curl.h>
 #include <map>
+#include <regex>
 #include <list>
 #include <vector>
 #include <optional>

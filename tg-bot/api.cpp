@@ -70,16 +70,10 @@ list<Update> Api::getUpdates(i32_t timeout_s, bool validate)
 
 inline string Api::escape_string(string s)
 {
-    string find = "\n";
-    string replace = "%0A";
+    std::regex expr{"\n"};
+    string fmt = "%0A";
 
-    for(string::size_type i = 0; (i = s.find(find, i)) != string::npos;)
-    {
-        s.replace(i, find.length(), replace);
-        i += replace.length();
-    }
-
-    return s;
+    return std::regex_replace(s, expr, fmt);
 }
 
 /*=====================================================*/
