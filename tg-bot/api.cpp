@@ -68,13 +68,6 @@ list<Update> Api::getUpdates(i32_t timeout_s, bool validate)
 /*==================== END OF getUpdates ====================*/
 
 
-inline string Api::escape_string(string s)
-{
-    std::regex expr{"\n"};
-    string fmt = "%0A";
-
-    return std::regex_replace(s, expr, fmt);
-}
 
 /*=====================================================*/
 /*==================== sendMessage ====================*/
@@ -684,7 +677,7 @@ bool Api::restrictChatMember(string chat_id, i32_t user_id, i32_t until_date,
     args["can_add_web_page_previews"] = string(can_add_web_page_previews ? "true" : "false");
 
     json jres = json::parse(execute("restrictChatMember", args));
-    return jres.at("ok").get<bool>();    
+    return jres.at("ok").get<bool>();
 }
 /*==================== END OF restrictChatMember ====================*/
 
@@ -836,6 +829,13 @@ on_err:
     throw TelegramBadRequestException(res);
 }
 
+inline string Api::escape_string(string s)
+{
+    std::regex expr{"\n"};
+    string fmt = "%0A";
+
+    return std::regex_replace(s, expr, fmt);
+}
 
 size_t CurlWrite_CallbackFunc_StdString(void *contents, size_t size, size_t nmemb, string *s)
 {
