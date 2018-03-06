@@ -7,7 +7,7 @@ Handy Telegram bot API wrapper. **IN DEVELOPMENT**.
 - Depencencies: 
   - [libcurl](https://www.github.com/curl/curl)(install with [this guide](https://curl.haxx.se/docs/install.html))
   - [nlohmann/json](https://www.github.com/nlohmann/json)(1 file header-only library)
-  - [libboost](http://www.boost.org)(Only for *boosted* branch)
+  - [libboost](http://www.boost.org)(Used version 1.58.0)
 - Realized bot features: *polling*, *callbacks*
 
 ## Simple Example
